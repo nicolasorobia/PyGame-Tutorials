@@ -16,8 +16,16 @@ running = True
 
 # importing an image
 player_surf = pygame.image.load(join('images', 'player.png')).convert_alpha()
+player_rect = player_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+
 star_surf = pygame.image.load(join('images', 'star.png')).convert_alpha()
 star_positions = [(randint(0, WINDOW_WIDTH), randint(0, WINDOW_HEIGHT) ) for _ in range(20)]
+
+meteor_surf = pygame.image.load(join('images', 'meteor.png')).convert_alpha()
+meteor_rect = meteor_surf.get_frect(center = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+
+laser_surf = pygame.image.load(join('images', 'laser.png')).convert_alpha()
+laser_rect = laser_surf.get_frect(bottomleft = (WINDOW_WIDTH - 1260, WINDOW_HEIGHT - 20))
 
 while running:
     # event loop
@@ -26,11 +34,19 @@ while running:
             running = False
 
     display_surface.fill('darkgray')
-    display_surface.blit(player_surf, ((1280/2) - (player_surf.get_width()/2), 310))
 
+    display_surface.blit(meteor_surf, meteor_rect)
+
+    display_surface.blit(laser_surf, laser_rect)
+    
     # place 20 stars surfaces randomly
     for pos in star_positions:
         display_surface.blit(star_surf, pos)
+
+    if player_rect.right < WINDOW_WIDTH:
+        player_rect.left += .1
+    display_surface.blit(player_surf, player_rect)
+
 
     pygame.display.update()
 
